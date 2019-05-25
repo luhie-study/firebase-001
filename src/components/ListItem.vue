@@ -10,11 +10,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item of items" :key="item['.key']">
+        <tr v-for="item of items" :key="item.key">
           <td>{{ item.name }}</td>
           <td>{{ item.price }}</td>
           <td>
-            <router-link :to="{ name: 'Edit', params: { id: item['.key'] } }" class="btn btn-warning">
+            <router-link :to="{ name: 'Edit', params: { id: item.key } }" class="btn btn-warning">
               Edit
             </router-link>
           </td>
@@ -38,7 +38,15 @@ export default {
   },
   methods: {
     getItemFromDB() {
-      db.ref('items').on('value', snapshot => this.items = snapshot.val())
+      console.log('start get item')
+      db.ref('items').on('value', snapshot => {
+        if(this.items != null) this.items = []
+        snapshot.forEach(childSnapshot => {
+          const childData = childSnapshot.val()
+          childData['key'] = childSnapshot.key
+          this.items.push(childData)
+        })
+      })
     }
   },
   created() {

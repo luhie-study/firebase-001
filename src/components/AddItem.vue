@@ -43,10 +43,11 @@ export default {
   },
   methods: {
     writeUserData() {
+      const newPostKey = db.ref().child('items').push().key;
       db.ref('items').push({
         name: this.newItem.name,
         price: this.newItem.price
-      })
+      }).key
       this.newItem.name = ''
       this.newItem.price = ''
       this.$router.push('/index')
