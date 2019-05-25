@@ -6,7 +6,8 @@
         <tr>
           <th>Item Name</th>
           <th>Item Price</th>
-          <th collspan="2">Action</th>
+          <th>Action</th>
+          <th>ect</th>
         </tr>
       </thead>
       <tbody>
@@ -17,6 +18,9 @@
             <router-link :to="{ name: 'Edit', params: { id: item.key } }" class="btn btn-warning">
               Edit
             </router-link>
+          </td>
+          <td>
+            <button @click="deleteItem(item.key)" class="btn btn-danger"> Delete</button>
           </td>
         </tr>
       </tbody>
@@ -47,6 +51,9 @@ export default {
           this.items.push(childData)
         })
       })
+    },
+    deleteItem(key) {
+      db.ref('items').child(key).remove()
     }
   },
   created() {
